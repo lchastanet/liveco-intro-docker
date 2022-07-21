@@ -3,14 +3,14 @@ const db = require("./db")
 exports.findAll = () => {
   return db
     .promise()
-    .query("SELECT * FROM `students`")
+    .query("SELECT * FROM `student`")
     .then((result) => result[0])
 }
 
 exports.findOne = (studentId) => {
   return db
     .promise()
-    .query("SELECT * FROM `students` WHERE ID = ?", [studentId])
+    .query("SELECT * FROM `student` WHERE ID = ?", [studentId])
     .then(([result]) => result)
 }
 
@@ -19,7 +19,7 @@ exports.addOne = (student) => {
   return db
     .promise()
     .query(
-      "INSERT INTO `students` (firstname, lastname, age, campus, Remote) VALUES (?, ?, ?, ?, ?)",
+      "INSERT INTO `student` (firstname, lastname, age, campus, Remote) VALUES (?, ?, ?, ?, ?)",
       [firstname, lastname, age, campus, remote]
     )
     .then(([result]) => {
@@ -30,7 +30,7 @@ exports.addOne = (student) => {
 exports.replaceOne = (studentId, student) => {
   return db
     .promise()
-    .query("UPDATE `students` SET ? WHERE ID = ?", [student, studentId])
+    .query("UPDATE `student` SET ? WHERE ID = ?", [student, studentId])
     .then(([result]) => {
       return { id: studentId, ...student }
     })
@@ -39,7 +39,7 @@ exports.replaceOne = (studentId, student) => {
 exports.removeOne = (studentId) => {
   return db
     .promise()
-    .query("DELETE FROM `students` WHERE ID = ?", [studentId])
+    .query("DELETE FROM `student` WHERE ID = ?", [studentId])
     .then(([result]) => {
       if (result.affectedRows) {
         return true
