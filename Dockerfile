@@ -20,4 +20,4 @@ EXPOSE 2368
 #VOLUME /app/logs
 
 # Commande par défault lorsque le conteneur est lancé
-CMD [ "npm", "start" ]
+CMD ["npx", "nodemon", "-L", "server.js" ]
