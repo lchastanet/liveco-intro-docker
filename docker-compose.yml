@@ -31,12 +31,12 @@ services:
       - DB_NAME=wild_students
 
   migration:
+    depends_on:
+        - db
     build: 
       context: .
     command:
       ["./wait-for-it/wait-for-it.sh", "db:3306", "--", "npm", "run", "migrate"]
-    depends_on:
-      - db
     environment:
       - DB_HOST=db
       - DB_USER=toto
