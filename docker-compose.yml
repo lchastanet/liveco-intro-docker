@@ -42,6 +42,7 @@ services:
       - DB_USER=toto
       - DB_PASSWORD=root
       - DB_NAME=wild_students
+    restart: on-failure
       
 volumes:
   db_data:
