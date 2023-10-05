@@ -13,8 +13,6 @@ RUN npm install
 # Ajoute les fichiers de notre projet au conteneur
 COPY . .
 
-RUN git clone https://github.com/vishnubob/wait-for-it.git
-
 # Numéro de port par lequel notre conteneur sera accessible 
 EXPOSE 8000
 

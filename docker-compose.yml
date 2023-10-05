@@ -1,5 +1,35 @@
 version: "3.8"
 services:
+  app:
+    depends_on:
+      - migration
+    container_name: express_mysql
+    build:
+      context: .
+    ports:
+      - 8000:8000
+    command: ["npm", "start"]
+    restart: always
+    environment:
+      - DB_HOST=db
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+
+  migration:
+    depends_on:
+        - db
+    build: 
+      context: .
+    command:
+      ["npm", "run", "migrate"]
+    environment:
+      - DB_HOST=db
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_NAME=${DB_NAME}
+    restart: on-failure
+
   db:
     image: mysql:8
     ports:
@@ -9,40 +39,9 @@ services:
     restart: always
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=wild_students
-      - MYSQL_USER=toto
-      - MYSQL_PASSWORD=root
+      - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
 
-  app:
-    depends_on:
-      - db
-    container_name: express_mysql
-    build: 
-      context: .
-    ports:
-      - 8000:8000
-    command:
-      ["./wait-for-it/wait-for-it.sh", "db:3306", "--", "npm", "start"]
-    restart: always
-    environment:
-      - DB_HOST=db
-      - DB_USER=toto
-      - DB_PASSWORD=root
-      - DB_NAME=wild_students
-
-  migration:
-    depends_on:
-        - db
-    build: 
-      context: .
-    command:
-      ["./wait-for-it/wait-for-it.sh", "db:3306", "--", "npm", "run", "migrate"]
-    environment:
-      - DB_HOST=db
-      - DB_USER=toto
-      - DB_PASSWORD=root
-      - DB_NAME=wild_students
-    restart: on-failure
-      
 volumes:
   db_data:
